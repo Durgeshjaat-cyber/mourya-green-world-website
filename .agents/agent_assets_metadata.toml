@@ -60,3 +60,27 @@ id = "yQMHYUReXGvGTK1HP1i_7"
 uri = "file://artifacts/mourya-green-world/public/images/products/plant-10.png"
 type = "image"
 title = "Ficus Bonsai tree"
+
+[[generated]]
+id = "ykfhnaigcs8TIThITclwV"
+uri = "file://artifacts/mourya-green-world/src/assets/hero.png"
+type = "image"
+title = "Nursery hero banner"
+
+[[generated]]
+id = "ZBC9ZqOAbOoILGmxZo74z"
+uri = "file://artifacts/mourya-green-world/src/assets/plant-1.png"
+type = "image"
+title = "Monstera plant"
+
+[[generated]]
+id = "El2rxoj7CvHEn3tYLv8P1"
+uri = "file://artifacts/mourya-green-world/src/assets/plant-2.png"
+type = "image"
+title = "Snake plant"
+
+[[generated]]
+id = "nA-QHQkReADedM2yOcCO-"
+uri = "file://artifacts/mourya-green-world/src/assets/plant-3.png"
+type = "image"
+title = "Fiddle leaf fig"

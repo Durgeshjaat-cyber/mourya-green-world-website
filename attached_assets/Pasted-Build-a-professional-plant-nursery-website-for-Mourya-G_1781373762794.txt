@@ -1,0 +1,108 @@
+Build a professional plant nursery website for Mourya Green World with a PRIVATE OWNER ADMIN PANEL.
+
+IMPORTANT REQUIREMENT:
+
+The website must have two separate areas:
+
+1. PUBLIC WEBSITE
+- Anyone can visit and browse.
+- View plants, services, gallery, contact information.
+- Mobile responsive.
+- Premium modern design.
+- Fast loading.
+- SEO optimized.
+
+2. PRIVATE OWNER ADMIN PANEL
+- Hidden from public users.
+- Accessible only through a secret admin login page.
+- No admin buttons should be visible on the public website.
+- Only the website owner can access it.
+
+AUTHENTICATION:
+
+- Secure email and password login.
+- Passwords must be encrypted.
+- Session management.
+- Protected routes.
+- Auto logout after inactivity.
+- No one can access admin pages without login.
+
+ADMIN FEATURES:
+
+Dashboard:
+- Total plants
+- Total inquiries
+- Total categories
+- Recent activity
+
+Plant Management:
+- Add plants
+- Edit plants
+- Delete plants
+- Upload plant images
+- Change plant descriptions
+- Mark featured plants
+
+Category Management:
+- Create categories
+- Edit categories
+- Delete categories
+
+Gallery Management:
+- Upload images
+- Delete images
+- Organize gallery
+
+Homepage Management:
+- Change banners
+- Change hero section text
+- Change services
+- Change featured plants
+
+Contact Management:
+- Update phone numbers
+- Update email
+- Update address
+- Update WhatsApp number
+
+Inquiry Management:
+- View customer messages
+- Delete messages
+- Mark messages as read
+
+Security:
+
+- Create ONLY ONE OWNER ACCOUNT.
+- No registration page.
+- No signup page.
+- No public account creation.
+- Only owner login should exist.
+- Admin credentials must be stored securely.
+- Include password change feature.
+- Include forgot password feature using owner email only.
+
+TECH STACK:
+
+Frontend:
+- React
+- Tailwind CSS
+
+Backend:
+- Node.js
+- Express
+
+Database:
+- MongoDB
+
+Storage:
+- Image upload support
+
+UI:
+- Premium green theme
+- Modern animations
+- Professional dashboard
+- Mobile responsive admin panel
+
+Generate complete production-ready code.
+
+Also provide setup instructions for deployment on Replit.

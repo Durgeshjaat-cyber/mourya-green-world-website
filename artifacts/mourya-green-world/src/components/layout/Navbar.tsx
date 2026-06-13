@@ -19,6 +19,7 @@ export function Navbar() {
     { name: 'About', path: '/about' },
     { name: 'Gallery', path: '/gallery' },
     { name: 'Blog', path: '/blog' },
+    { name: 'Inquiry', path: '/inquiry' },
     { name: 'Contact', path: '/contact' },
   ];
 

@@ -17,6 +17,7 @@ import BlogDetail from "@/pages/blog-detail";
 import Contact from "@/pages/contact";
 import Cart from "@/pages/cart";
 import Wishlist from "@/pages/wishlist";
+import Inquiry from "@/pages/inquiry";
 import NotFound from "@/pages/not-found";
 
 const queryClient = new QueryClient();
@@ -37,6 +38,7 @@ function Router() {
           <Route path="/contact" component={Contact} />
           <Route path="/cart" component={Cart} />
           <Route path="/wishlist" component={Wishlist} />
+          <Route path="/inquiry" component={Inquiry} />
           <Route component={NotFound} />
         </Switch>
       </div>

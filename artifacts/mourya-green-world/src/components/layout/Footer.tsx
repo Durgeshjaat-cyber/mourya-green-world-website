@@ -60,6 +60,7 @@ export function Footer() {
                 { name: 'About Us', path: '/about' },
                 { name: 'Gallery', path: '/gallery' },
                 { name: 'Plant Care Blog', path: '/blog' },
+                { name: 'Inquiry & Bulk Orders', path: '/inquiry' },
                 { name: 'Contact Us', path: '/contact' },
               ].map(link => (
                 <li key={link.path}>

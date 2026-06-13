@@ -4,10 +4,12 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ShoppingBag, Trash2, Plus, Minus, ArrowLeft, ArrowRight } from 'lucide-react';
 import { FaWhatsapp } from 'react-icons/fa';
 import { useCart } from '@/contexts/CartContext';
+import { usePublicData } from '@/contexts/AdminContext';
 import { Button } from '@/components/ui/button';
 
 export default function Cart() {
   const { items, removeFromCart, updateQuantity, clearCart, cartTotal, cartCount } = useCart();
+  const { settings } = usePublicData();
   const [, setLocation] = useLocation();
 
   useEffect(() => {
@@ -125,7 +127,7 @@ export default function Cart() {
                 </div>
 
                 <a
-                  href={`https://wa.me/919871217876?text=${waMsg}`}
+                  href={`https://wa.me/${settings.whatsappPrimary}?text=${waMsg}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   data-testid="button-checkout-whatsapp"

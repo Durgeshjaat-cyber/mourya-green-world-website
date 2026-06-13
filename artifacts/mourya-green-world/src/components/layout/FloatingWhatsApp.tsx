@@ -1,9 +1,10 @@
 import { motion } from 'framer-motion';
 import { FaWhatsapp } from 'react-icons/fa';
+import { usePublicData } from '@/contexts/AdminContext';
 
 export function FloatingWhatsApp() {
-  const waUrl =
-    'https://wa.me/919871217876?text=Hi%2C%20I%E2%80%99m%20interested%20in%20plants%20from%20Mourya%20Green%20World!';
+  const { settings } = usePublicData();
+  const waUrl = `https://wa.me/${settings.whatsappPrimary}?text=Hi%2C%20I%E2%80%99m%20interested%20in%20plants%20from%20Mourya%20Green%20World!`;
 
   return (
     <motion.a

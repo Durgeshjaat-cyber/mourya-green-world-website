@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { useLocation } from 'wouter';
 import { motion } from 'framer-motion';
 import { Search, SlidersHorizontal, X } from 'lucide-react';
-import { products, categories } from '@/data/products';
+import { usePublicData } from '@/contexts/AdminContext';
 import { ProductCard } from '@/components/ProductCard';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -10,6 +10,7 @@ import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 export default function Shop() {
+  const { products, categories } = usePublicData();
   const [location] = useLocation();
   const params = new URLSearchParams(location.includes('?') ? location.split('?')[1] : '');
   const initialCategory = params.get('category') || 'All';

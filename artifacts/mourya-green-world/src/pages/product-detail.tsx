@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams, Link, useLocation } from 'wouter';
 import { motion } from 'framer-motion';
 import { Star, ShoppingBag, MessageCircle, Heart, Truck, RotateCcw, Sun, Droplets, TrendingUp, CheckCircle, ArrowLeft } from 'lucide-react';
-import { products } from '@/data/products';
+import { usePublicData } from '@/contexts/AdminContext';
 import { useCart } from '@/contexts/CartContext';
 import { useWishlist } from '@/contexts/WishlistContext';
 import { useToast } from '@/hooks/use-toast';
@@ -32,6 +32,7 @@ const reviews = [
 ];
 
 export default function ProductDetail() {
+  const { products, settings } = usePublicData();
   const params = useParams<{ id: string }>();
   const [, setLocation] = useLocation();
   const { addToCart } = useCart();
@@ -185,7 +186,7 @@ export default function ProductDetail() {
                 </button>
               </div>
               <a
-                href={`https://wa.me/919871217876?text=${waMsg}`}
+                href={`https://wa.me/${settings.whatsappPrimary}?text=${waMsg}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 data-testid="button-buy-whatsapp"

@@ -9,7 +9,7 @@ import { ProductCard } from '@/components/ProductCard';
 import { Button } from '@/components/ui/button';
 
 export default function Wishlist() {
-  const { items, clearWishlist } = useWishlist();
+  const { items, removeFromWishlist } = useWishlist();
   const { addToCart } = useCart();
   const { toast } = useToast();
   const [, setLocation] = useLocation();
@@ -50,7 +50,7 @@ export default function Wishlist() {
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={clearWishlist}
+                onClick={() => items.forEach(item => removeFromWishlist(item.id))}
                 className="text-muted-foreground hover:text-destructive"
                 data-testid="button-clear-wishlist"
               >

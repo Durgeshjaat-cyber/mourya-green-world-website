@@ -6,6 +6,7 @@ import { Product } from '@/data/products';
 import { useCart } from '@/contexts/CartContext';
 import { useWishlist } from '@/contexts/WishlistContext';
 import { useToast } from '@/hooks/use-toast';
+import { usePublicData } from '@/contexts/AdminContext';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 
@@ -52,6 +53,7 @@ export function ProductCard({ product }: ProductCardProps) {
   const { addToCart } = useCart();
   const { toggleWishlist, isInWishlist } = useWishlist();
   const { toast } = useToast();
+  const { settings } = usePublicData();
   const [imgError, setImgError] = useState(false);
 
   const discount = Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100);
@@ -163,7 +165,7 @@ export function ProductCard({ product }: ProductCardProps) {
             Add to Cart
           </Button>
           <a
-            href={`https://wa.me/919871217876?text=${waMsg}`}
+            href={`https://wa.me/${settings.whatsappPrimary}?text=${waMsg}`}
             target="_blank"
             rel="noopener noreferrer"
             data-testid={`button-whatsapp-${product.id}`}

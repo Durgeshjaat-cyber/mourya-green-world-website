@@ -87,7 +87,7 @@ export default function BlogDetail() {
             Have questions about caring for your plants? Our experts are just a WhatsApp message away.
           </p>
           <a
-            href="https://wa.me/919876543210?text=Hi%2C%20I%20read%20your%20blog%20and%20have%20a%20plant%20question!"
+            href="https://wa.me/919871217876?text=Hi%2C%20I%20read%20your%20blog%20and%20have%20a%20plant%20question!"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 bg-[#25D366] text-white font-semibold px-8 py-3 rounded-full hover:bg-[#1da851] transition-colors shadow-lg"

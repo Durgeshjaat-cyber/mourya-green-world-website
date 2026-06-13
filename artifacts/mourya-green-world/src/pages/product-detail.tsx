@@ -185,7 +185,7 @@ export default function ProductDetail() {
                 </button>
               </div>
               <a
-                href={`https://wa.me/919876543210?text=${waMsg}`}
+                href={`https://wa.me/919871217876?text=${waMsg}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 data-testid="button-buy-whatsapp"

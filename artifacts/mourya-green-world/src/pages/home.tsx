@@ -104,7 +104,7 @@ export default function Home() {
                 Shop Now <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
               <a
-                href="https://wa.me/919876543210?text=Hi%2C%20I%E2%80%99m%20interested%20in%20plants%20from%20Mourya%20Green%20World!"
+                href="https://wa.me/919871217876?text=Hi%2C%20I%E2%80%99m%20interested%20in%20plants%20from%20Mourya%20Green%20World!"
                 target="_blank"
                 rel="noopener noreferrer"
                 data-testid="button-whatsapp-hero"
@@ -286,7 +286,7 @@ export default function Home() {
             Chat with our plant experts on WhatsApp. We help you pick the perfect plant for your space, budget, and lifestyle.
           </p>
           <a
-            href="https://wa.me/919876543210?text=Hi%2C%20I%20need%20help%20choosing%20a%20plant!"
+            href="https://wa.me/919871217876?text=Hi%2C%20I%20need%20help%20choosing%20a%20plant!"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 bg-white text-primary font-semibold px-8 py-3 rounded-full hover:bg-white/90 transition-colors shadow-lg"

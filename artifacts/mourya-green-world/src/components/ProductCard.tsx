@@ -163,7 +163,7 @@ export function ProductCard({ product }: ProductCardProps) {
             Add to Cart
           </Button>
           <a
-            href={`https://wa.me/919876543210?text=${waMsg}`}
+            href={`https://wa.me/919871217876?text=${waMsg}`}
             target="_blank"
             rel="noopener noreferrer"
             data-testid={`button-whatsapp-${product.id}`}

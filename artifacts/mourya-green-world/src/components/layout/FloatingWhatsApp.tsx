@@ -3,7 +3,7 @@ import { FaWhatsapp } from 'react-icons/fa';
 
 export function FloatingWhatsApp() {
   const waUrl =
-    'https://wa.me/919876543210?text=Hi%2C%20I%E2%80%99m%20interested%20in%20plants%20from%20Mourya%20Green%20World!';
+    'https://wa.me/919871217876?text=Hi%2C%20I%E2%80%99m%20interested%20in%20plants%20from%20Mourya%20Green%20World!';
 
   return (
     <motion.a

@@ -65,7 +65,7 @@ const inquirySchema = z.object({
 
 type InquiryForm = z.infer<typeof inquirySchema>;
 
-const WA_NUMBER = '919876543210';
+const WA_NUMBER = '919871217876';
 
 function buildWhatsAppMessage(type: FormType, data: InquiryForm): string {
   const typeLabels: Record<FormType, string> = {

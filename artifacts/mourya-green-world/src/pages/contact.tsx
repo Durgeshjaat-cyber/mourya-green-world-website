@@ -35,7 +35,8 @@ const faqs = [
 const contactInfo = [
   { icon: MapPin, title: 'Visit Us', content: 'Mourya Nursery, Sector 94, Bandh Road, Near Okhla Bird Sanctuary, Noida, UP', link: undefined },
   { icon: Mail, title: 'Email Us', content: 'mouryagreenworld@gmail.com', link: 'mailto:mouryagreenworld@gmail.com' },
-  { icon: FaWhatsapp, title: 'WhatsApp', content: '+91 98765 43210', link: 'https://wa.me/919876543210' },
+  { icon: FaWhatsapp, title: 'WhatsApp', content: '+91 98712 17876', link: 'https://wa.me/919871217876' },
+  { icon: Phone, title: 'Secondary Contact', content: '+91 99580 32648', link: 'tel:+919958032648' },
   { icon: Clock, title: 'Open Hours', content: 'Mon – Sun: 9:00 AM – 7:00 PM', link: undefined },
 ];
 
@@ -171,7 +172,7 @@ export default function Contact() {
             <div className="flex items-center gap-3 mt-6 pt-6 border-t border-border">
               <p className="text-sm text-muted-foreground">Or reach us on:</p>
               <a
-                href="https://wa.me/919876543210"
+                href="https://wa.me/919871217876"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 text-sm font-medium text-[#25D366] hover:underline"
@@ -210,7 +211,7 @@ export default function Contact() {
               </div>
             </div>
             <a
-              href="https://wa.me/919876543210?text=Hi%2C%20I%20want%20to%20place%20an%20order!"
+              href="https://wa.me/919871217876?text=Hi%2C%20I%20want%20to%20place%20an%20order!"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center justify-center gap-3 bg-[#25D366] text-white font-semibold px-6 py-4 rounded-2xl hover:bg-[#1da851] transition-colors shadow-lg"

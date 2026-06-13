@@ -39,7 +39,7 @@ export function Footer() {
                 <Instagram className="h-4 w-4 text-white" />
               </a>
               <a
-                href="https://wa.me/919876543210?text=Hi%2C%20I'm%20interested%20in%20plants%20from%20Mourya%20Green%20World!"
+                href="https://wa.me/919871217876?text=Hi%2C%20I'm%20interested%20in%20plants%20from%20Mourya%20Green%20World!"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors"
@@ -89,12 +89,21 @@ export function Footer() {
               <li className="flex items-center gap-3">
                 <FaWhatsapp className="h-4 w-4 text-primary shrink-0" />
                 <a
-                  href="https://wa.me/919876543210"
+                  href="https://wa.me/919871217876"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-sm text-white/70 hover:text-white transition-colors"
                 >
-                  +91 98765 43210
+                  +91 98712 17876
+                </a>
+              </li>
+              <li className="flex items-center gap-3">
+                <Phone className="h-4 w-4 text-primary shrink-0" />
+                <a
+                  href="tel:+919958032648"
+                  className="text-sm text-white/70 hover:text-white transition-colors"
+                >
+                  +91 99580 32648
                 </a>
               </li>
             </ul>

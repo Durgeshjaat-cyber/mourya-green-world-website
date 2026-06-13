@@ -1,0 +1,62 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "AkBzKd3oFn-WkgkbAOIQh"
+uri = "file://artifacts/mourya-green-world/public/images/products/plant-1.png"
+type = "image"
+title = "Money plant indoor"
+
+[[generated]]
+id = "oA9dJJMH79NulePVBByNV"
+uri = "file://artifacts/mourya-green-world/public/images/products/plant-2.png"
+type = "image"
+title = "Snake plant indoor"
+
+[[generated]]
+id = "2D_vkcUtXvh3zj4iKPkbV"
+uri = "file://artifacts/mourya-green-world/public/images/products/plant-3.png"
+type = "image"
+title = "Syngonium plant indoor"
+
+[[generated]]
+id = "3ml4svWT8WMdwYHjq_Nnr"
+uri = "file://artifacts/mourya-green-world/public/images/products/plant-4.png"
+type = "image"
+title = "Monstera plant indoor"
+
+[[generated]]
+id = "msnRrnC1htu0juzg9c7Iu"
+uri = "file://artifacts/mourya-green-world/public/images/products/plant-5.png"
+type = "image"
+title = "Lucky Bamboo plant"
+
+[[generated]]
+id = "A8inluGp8bctt0vloHgQg"
+uri = "file://artifacts/mourya-green-world/public/images/products/plant-6.png"
+type = "image"
+title = "Peace Lily plant"
+
+[[generated]]
+id = "am1wuozi_n0D7oMRVF15S"
+uri = "file://artifacts/mourya-green-world/public/images/products/plant-7.png"
+type = "image"
+title = "Jade plant succulent"
+
+[[generated]]
+id = "HaJWyUV3baLBQ1UeRASYq"
+uri = "file://artifacts/mourya-green-world/public/images/products/plant-8.png"
+type = "image"
+title = "Areca Palm indoor"
+
+[[generated]]
+id = "MfNba6-4_QqvJwgZEzsh6"
+uri = "file://artifacts/mourya-green-world/public/images/products/plant-9.png"
+type = "image"
+title = "Tulsi plant outdoor"
+
+[[generated]]
+id = "yQMHYUReXGvGTK1HP1i_7"
+uri = "file://artifacts/mourya-green-world/public/images/products/plant-10.png"
+type = "image"
+title = "Ficus Bonsai tree"

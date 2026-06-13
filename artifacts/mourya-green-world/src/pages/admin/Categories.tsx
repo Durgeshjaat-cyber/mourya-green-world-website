@@ -1,165 +1,181 @@
-import { useState } from "react";
-import { useListCategories, useCreateCategory, useUpdateCategory, useDeleteCategory, getListCategoriesQueryKey } from "@workspace/api-client-react";
-import { useQueryClient } from "@tanstack/react-query";
-import { AdminLayout } from "@/components/layout/AdminLayout";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { useToast } from "@/hooks/use-toast";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import { Plus, Edit2, Trash2, FolderTree } from "lucide-react";
-import type { Category } from "@workspace/api-client-react";
+import { useEffect, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Plus, Trash2, Pencil, Check, X, AlertTriangle, Tag } from 'lucide-react';
+import { useAdmin } from '@/contexts/AdminContext';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
+import { useToast } from '@/hooks/use-toast';
 
-const schema = z.object({
-  name: z.string().min(1, "Name is required"),
-  description: z.string().optional(),
-  imageUrl: z.string().optional(),
-});
+const CATEGORY_EMOJIS: Record<string, string> = {
+  'Indoor Plants': '🌿', 'Outdoor Plants': '🌱', 'Air Purifying Plants': '💨',
+  'Lucky Plants': '🍀', 'Flowering Plants': '🌸', 'Succulents': '🌵',
+  'Hanging Plants': '🪴', 'Bonsai Plants': '🌳', 'Pots & Planters': '🏺',
+};
 
 export default function AdminCategories() {
-  const [open, setOpen] = useState(false);
-  const [editing, setEditing] = useState<Category | null>(null);
-  const queryClient = useQueryClient();
+  const { categories, products, addCategory, removeCategory, renameCategory } = useAdmin();
   const { toast } = useToast();
-  const { data: categories = [], isLoading } = useListCategories();
-  const createMutation = useCreateCategory();
-  const updateMutation = useUpdateCategory();
-  const deleteMutation = useDeleteCategory();
+  const [newCatName, setNewCatName] = useState('');
+  const [editingCat, setEditingCat] = useState<string | null>(null);
+  const [editValue, setEditValue] = useState('');
 
-  const form = useForm<z.infer<typeof schema>>({
-    resolver: zodResolver(schema),
-    defaultValues: { name: "", description: "", imageUrl: "" },
-  });
+  useEffect(() => { document.title = 'Categories — Admin'; }, []);
 
-  const openCreate = () => {
-    setEditing(null);
-    form.reset({ name: "", description: "", imageUrl: "" });
-    setOpen(true);
-  };
+  const productCountFor = (cat: string) => products.filter(p => p.category === cat).length;
 
-  const openEdit = (cat: Category) => {
-    setEditing(cat);
-    form.reset({ name: cat.name, description: cat.description || "", imageUrl: cat.imageUrl || "" });
-    setOpen(true);
-  };
-
-  const onSubmit = (values: z.infer<typeof schema>) => {
-    if (editing) {
-      updateMutation.mutate(
-        { id: editing.id, data: values },
-        {
-          onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: getListCategoriesQueryKey() });
-            toast({ title: "Category updated" });
-            setOpen(false);
-          },
-          onError: () => toast({ title: "Error", variant: "destructive" }),
-        }
-      );
-    } else {
-      createMutation.mutate(
-        { data: values },
-        {
-          onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: getListCategoriesQueryKey() });
-            toast({ title: "Category created" });
-            setOpen(false);
-          },
-          onError: () => toast({ title: "Error", variant: "destructive" }),
-        }
-      );
+  const handleAdd = () => {
+    const trimmed = newCatName.trim();
+    if (!trimmed) return;
+    if (categories.includes(trimmed)) {
+      toast({ title: 'Category exists', description: `"${trimmed}" already exists.`, variant: 'destructive' });
+      return;
     }
+    addCategory(trimmed);
+    toast({ title: 'Category added!', description: `"${trimmed}" has been added.` });
+    setNewCatName('');
   };
 
-  const handleDelete = (cat: Category) => {
-    if (!confirm(`Delete category "${cat.name}"?`)) return;
-    deleteMutation.mutate(
-      { id: cat.id },
-      {
-        onSuccess: () => {
-          queryClient.invalidateQueries({ queryKey: getListCategoriesQueryKey() });
-          toast({ title: "Category deleted" });
-        },
-        onError: () => toast({ title: "Error", variant: "destructive" }),
-      }
-    );
+  const startEdit = (cat: string) => {
+    setEditingCat(cat);
+    setEditValue(cat);
+  };
+
+  const commitEdit = () => {
+    if (!editingCat || !editValue.trim()) { setEditingCat(null); return; }
+    if (editValue.trim() === editingCat) { setEditingCat(null); return; }
+    if (categories.includes(editValue.trim())) {
+      toast({ title: 'Name taken', description: 'That category name already exists.', variant: 'destructive' });
+      return;
+    }
+    renameCategory(editingCat, editValue.trim());
+    toast({ title: 'Category renamed!', description: `"${editingCat}" → "${editValue.trim()}"` });
+    setEditingCat(null);
   };
 
   return (
-    <AdminLayout>
-      <div className="space-y-6">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-          <h1 className="text-3xl font-serif font-bold">Categories</h1>
-          <Button onClick={openCreate} data-testid="button-add-category">
-            <Plus className="w-4 h-4 mr-2" /> Add Category
-          </Button>
-        </div>
-
-        {isLoading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {[...Array(6)].map((_, i) => <div key={i} className="h-24 bg-muted animate-pulse rounded-xl" />)}
-          </div>
-        ) : categories.length === 0 ? (
-          <div className="text-center py-16 border rounded-xl">
-            <FolderTree className="w-10 h-10 text-muted-foreground mx-auto mb-3" />
-            <p className="text-muted-foreground">No categories yet. Add your first one.</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {categories.map((cat) => (
-              <div key={cat.id} className="bg-card border border-border rounded-xl p-5 flex items-center justify-between hover:border-primary/30 transition-colors" data-testid={`card-category-${cat.id}`}>
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
-                    <FolderTree className="w-5 h-5 text-primary" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-sm">{cat.name}</h3>
-                    {cat.description && <p className="text-xs text-muted-foreground mt-0.5 line-clamp-1">{cat.description}</p>}
-                  </div>
-                </div>
-                <div className="flex gap-1 shrink-0">
-                  <Button variant="ghost" size="icon" className="w-8 h-8" onClick={() => openEdit(cat)}>
-                    <Edit2 className="w-3.5 h-3.5" />
-                  </Button>
-                  <Button variant="ghost" size="icon" className="w-8 h-8 text-destructive hover:text-destructive" onClick={() => handleDelete(cat)}>
-                    <Trash2 className="w-3.5 h-3.5" />
-                  </Button>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
+    <div className="max-w-2xl space-y-6">
+      <div>
+        <h2 className="text-xl font-bold text-gray-900">Categories</h2>
+        <p className="text-sm text-gray-500">{categories.length} categories · Renaming updates all products in that category</p>
       </div>
 
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="max-w-md">
-          <DialogHeader>
-            <DialogTitle>{editing ? "Edit Category" : "Add Category"}</DialogTitle>
-          </DialogHeader>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              <FormField control={form.control} name="name" render={({ field }) => (
-                <FormItem><FormLabel>Name</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>
-              )} />
-              <FormField control={form.control} name="description" render={({ field }) => (
-                <FormItem><FormLabel>Description</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>
-              )} />
-              <FormField control={form.control} name="imageUrl" render={({ field }) => (
-                <FormItem><FormLabel>Image URL (optional)</FormLabel><FormControl><Input placeholder="https://..." {...field} /></FormControl><FormMessage /></FormItem>
-              )} />
-              <div className="flex gap-2 justify-end pt-2">
-                <Button type="button" variant="outline" onClick={() => setOpen(false)}>Cancel</Button>
-                <Button type="submit" disabled={createMutation.isPending || updateMutation.isPending}>
-                  {editing ? "Update" : "Create"}
-                </Button>
+      {/* Add new */}
+      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+        <h3 className="font-semibold text-gray-900 text-sm mb-3">Add New Category</h3>
+        <div className="flex gap-2">
+          <Input
+            data-testid="input-new-category"
+            placeholder="e.g. Medicinal Plants"
+            value={newCatName}
+            onChange={e => setNewCatName(e.target.value)}
+            onKeyDown={e => e.key === 'Enter' && handleAdd()}
+            className="flex-1"
+          />
+          <Button
+            data-testid="button-add-category"
+            onClick={handleAdd}
+            className="bg-primary hover:bg-primary/90 text-white gap-2"
+          >
+            <Plus className="h-4 w-4" /> Add
+          </Button>
+        </div>
+      </div>
+
+      {/* Category list */}
+      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+        <div className="px-5 py-3 border-b border-gray-50 bg-gray-50/50">
+          <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Existing Categories</span>
+        </div>
+        <AnimatePresence>
+          {categories.map((cat, i) => (
+            <motion.div
+              key={cat}
+              layout
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              className="border-b border-gray-50 last:border-0"
+              data-testid={`row-category-${cat}`}
+            >
+              <div className="flex items-center gap-4 px-5 py-4">
+                <div className="w-9 h-9 rounded-xl bg-primary/5 flex items-center justify-center text-xl shrink-0">
+                  {CATEGORY_EMOJIS[cat] || <Tag className="h-4 w-4 text-primary" />}
+                </div>
+
+                {editingCat === cat ? (
+                  <div className="flex items-center gap-2 flex-1">
+                    <Input
+                      autoFocus
+                      value={editValue}
+                      onChange={e => setEditValue(e.target.value)}
+                      onKeyDown={e => { if (e.key === 'Enter') commitEdit(); if (e.key === 'Escape') setEditingCat(null); }}
+                      className="h-8 text-sm"
+                    />
+                    <button onClick={commitEdit} className="w-7 h-7 rounded-lg bg-green-100 flex items-center justify-center hover:bg-green-200 transition-colors">
+                      <Check className="h-3.5 w-3.5 text-green-600" />
+                    </button>
+                    <button onClick={() => setEditingCat(null)} className="w-7 h-7 rounded-lg bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition-colors">
+                      <X className="h-3.5 w-3.5 text-gray-500" />
+                    </button>
+                  </div>
+                ) : (
+                  <div className="flex-1 min-w-0">
+                    <p className="font-medium text-sm text-gray-900">{cat}</p>
+                    <p className="text-xs text-gray-400">{productCountFor(cat)} product{productCountFor(cat) !== 1 ? 's' : ''}</p>
+                  </div>
+                )}
+
+                {editingCat !== cat && (
+                  <div className="flex items-center gap-1 shrink-0">
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      onClick={() => startEdit(cat)}
+                      className="h-8 w-8 p-0 text-gray-400 hover:text-primary hover:bg-primary/10"
+                      data-testid={`button-edit-category-${cat}`}
+                    >
+                      <Pencil className="h-3.5 w-3.5" />
+                    </Button>
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          className="h-8 w-8 p-0 text-gray-400 hover:text-red-500 hover:bg-red-50"
+                          data-testid={`button-delete-category-${cat}`}
+                        >
+                          <Trash2 className="h-3.5 w-3.5" />
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle className="flex items-center gap-2">
+                            <AlertTriangle className="h-5 w-5 text-red-500" />
+                            Delete "{cat}"?
+                          </AlertDialogTitle>
+                          <AlertDialogDescription>
+                            This removes the category. The {productCountFor(cat)} product{productCountFor(cat) !== 1 ? 's' : ''} in this category will still exist but will no longer have a valid category assigned.
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Cancel</AlertDialogCancel>
+                          <AlertDialogAction
+                            onClick={() => { removeCategory(cat); toast({ title: `"${cat}" deleted` }); }}
+                            className="bg-red-500 hover:bg-red-600 text-white"
+                          >
+                            Delete Category
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
+                  </div>
+                )}
               </div>
-            </form>
-          </Form>
-        </DialogContent>
-      </Dialog>
-    </AdminLayout>
+            </motion.div>
+          ))}
+        </AnimatePresence>
+      </div>
+    </div>
   );
 }

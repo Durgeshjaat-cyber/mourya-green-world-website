@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { ProductCard } from '@/components/ProductCard';
 import { blogPosts } from '@/data/blog';
 import { usePublicData } from '@/contexts/AdminContext';
+import { useSEO } from '@/lib/useSEO';
 
 const CATEGORY_ICONS: Record<string, string> = {
   'Indoor Plants': '🌿',
@@ -21,12 +22,6 @@ const CATEGORY_ICONS: Record<string, string> = {
   'Pots & Planters': '🏺',
 };
 
-const reviews = [
-  { name: 'Priya Sharma', rating: 5, text: 'Got my Monstera from here and it is absolutely thriving. Great quality and excellent packaging.', location: 'Noida Sector 18' },
-  { name: 'Rahul Verma', rating: 5, text: 'Best nursery in Noida! The plants are healthy and the WhatsApp support is incredibly helpful.', location: 'Greater Noida' },
-  { name: 'Anjali Singh', rating: 5, text: 'Ordered 5 plants and all arrived in perfect condition. Will definitely order again from Mourya Green World!', location: 'Noida Sector 62' },
-  { name: 'Deepak Gupta', rating: 4, text: 'My snake plant and aloe vera are doing amazing. The care guide that came with the order was super helpful.', location: 'Noida Extension' },
-];
 
 const benefits = [
   { icon: Leaf, title: 'Expert Care Advice', desc: 'Every plant comes with a detailed care guide. Our team is always available to answer your questions.' },
@@ -55,10 +50,15 @@ const stagger = {
 
 export default function Home() {
   const [, setLocation] = useLocation();
-  const { products, categories, settings } = usePublicData();
+  const { products, categories, settings, reviews } = usePublicData();
+
+  useSEO({
+    title: 'Mourya Green World — Bring Nature Home',
+    description: 'Buy premium indoor plants, outdoor plants, air purifying plants, lucky plants, succulents and more. Fresh from our nursery in Noida. WhatsApp to order today!',
+  });
 
   useEffect(() => {
-    document.title = 'Mourya Green World — Bring Nature Home';
+    window.scrollTo(0, 0);
   }, []);
 
   const bestsellers = products.filter(p => p.isBestseller).slice(0, 6);
@@ -308,7 +308,7 @@ export default function Home() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {reviews.map((review, i) => (
               <motion.div
-                key={review.name}
+                key={review.id}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}

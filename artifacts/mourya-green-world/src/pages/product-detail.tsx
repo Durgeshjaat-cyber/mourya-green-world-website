@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link, useLocation } from 'wouter';
 import { motion } from 'framer-motion';
-import { Star, ShoppingBag, MessageCircle, Heart, Truck, RotateCcw, Sun, Droplets, TrendingUp, CheckCircle, ArrowLeft } from 'lucide-react';
+import { Star, ShoppingBag, MessageCircle, Heart, Truck, RotateCcw, Sun, Droplets, TrendingUp, CheckCircle, ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react';
 import { usePublicData } from '@/contexts/AdminContext';
+import { useSEO } from '@/lib/useSEO';
 import { useCart } from '@/contexts/CartContext';
 import { useWishlist } from '@/contexts/WishlistContext';
 import { useToast } from '@/hooks/use-toast';
@@ -25,14 +26,14 @@ const PLANT_EMOJIS: Record<string, string> = {
   'Hanging Plants': '🪴', 'Bonsai Plants': '🌳', 'Pots & Planters': '🏺',
 };
 
-const reviews = [
+const _staticReviews = [
   { name: 'Priya S.', rating: 5, text: 'Plant arrived in perfect condition! Beautifully packaged and healthy.', date: 'Dec 2024' },
   { name: 'Rahul V.', rating: 5, text: 'Great quality. The care guide really helped me keep it thriving.', date: 'Nov 2024' },
   { name: 'Anjali M.', rating: 4, text: 'Happy with the purchase. Quick delivery within Noida.', date: 'Oct 2024' },
 ];
 
 export default function ProductDetail() {
-  const { products, settings } = usePublicData();
+  const { products, settings, reviews } = usePublicData();
   const params = useParams<{ id: string }>();
   const [, setLocation] = useLocation();
   const { addToCart } = useCart();
@@ -40,15 +41,22 @@ export default function ProductDetail() {
   const { toast } = useToast();
   const [quantity, setQuantity] = useState(1);
   const [imgError, setImgError] = useState(false);
+  const [activeImgIdx, setActiveImgIdx] = useState(0);
 
   const product = products.find(p => p.id === params.id);
 
+  // All images for gallery: primary + extras
+  const allImages = product ? [product.image, ...(product.images ?? [])].filter(Boolean) : [];
+
+  useSEO({
+    title: product ? `${product.name} — Mourya Green World` : 'Plant — Mourya Green World',
+    description: product ? `${product.description.slice(0, 150)}. Buy ${product.name} online from Mourya Green World, Noida. ₹${product.price} only.` : undefined,
+  });
+
   useEffect(() => {
-    if (product) {
-      document.title = `${product.name} — Mourya Green World`;
-    }
+    setActiveImgIdx(0);
     window.scrollTo(0, 0);
-  }, [product]);
+  }, [product?.id]);
 
   if (!product) {
     return (
@@ -80,28 +88,77 @@ export default function ProductDetail() {
 
       <div className="container mx-auto px-4">
         <div className="grid md:grid-cols-2 gap-10 mb-16">
-          {/* Image */}
+          {/* Image Gallery */}
           <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }}>
-            <div className={`aspect-square rounded-3xl overflow-hidden ${PLANT_COLORS[product.id] || 'bg-green-50'} flex items-center justify-center`}>
-              {!imgError ? (
+            {/* Main image */}
+            <div className={`relative aspect-square rounded-3xl overflow-hidden ${PLANT_COLORS[product.id] || 'bg-green-50'} flex items-center justify-center group`}>
+              {allImages[activeImgIdx] && !imgError ? (
                 <img
-                  src={product.image}
-                  alt={product.name}
+                  key={activeImgIdx}
+                  src={allImages[activeImgIdx]}
+                  alt={`${product.name} photo ${activeImgIdx + 1}`}
                   className="w-full h-full object-cover"
                   onError={() => setImgError(true)}
                 />
               ) : (
                 <span className="text-[160px]">{PLANT_EMOJIS[product.category] || '🌿'}</span>
               )}
+              {/* Prev/Next arrows when multiple images */}
+              {allImages.length > 1 && (
+                <>
+                  <button
+                    onClick={() => { setImgError(false); setActiveImgIdx(i => (i - 1 + allImages.length) % allImages.length); }}
+                    className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center shadow-md opacity-0 group-hover:opacity-100 transition-opacity hover:bg-white"
+                  >
+                    <ChevronLeft className="h-5 w-5 text-gray-700" />
+                  </button>
+                  <button
+                    onClick={() => { setImgError(false); setActiveImgIdx(i => (i + 1) % allImages.length); }}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center shadow-md opacity-0 group-hover:opacity-100 transition-opacity hover:bg-white"
+                  >
+                    <ChevronRight className="h-5 w-5 text-gray-700" />
+                  </button>
+                  {/* Dot indicators */}
+                  <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
+                    {allImages.map((_, i) => (
+                      <button
+                        key={i}
+                        onClick={() => { setImgError(false); setActiveImgIdx(i); }}
+                        className={`w-2 h-2 rounded-full transition-all ${i === activeImgIdx ? 'bg-primary w-5' : 'bg-white/70'}`}
+                      />
+                    ))}
+                  </div>
+                </>
+              )}
             </div>
             {/* Thumbnails */}
-            <div className="flex gap-3 mt-4">
-              {[0, 1, 2].map(i => (
-                <div key={i} className={`w-20 h-20 rounded-xl border-2 ${i === 0 ? 'border-primary' : 'border-border'} ${PLANT_COLORS[product.id] || 'bg-green-50'} flex items-center justify-center text-3xl cursor-pointer`}>
-                  {PLANT_EMOJIS[product.category] || '🌿'}
-                </div>
-              ))}
-            </div>
+            {allImages.length > 1 && (
+              <div className="flex gap-2 mt-3 overflow-x-auto pb-1">
+                {allImages.map((img, i) => (
+                  <button
+                    key={i}
+                    onClick={() => { setImgError(false); setActiveImgIdx(i); }}
+                    className={`w-16 h-16 rounded-xl border-2 shrink-0 overflow-hidden ${PLANT_COLORS[product.id] || 'bg-green-50'} flex items-center justify-center transition-all ${i === activeImgIdx ? 'border-primary shadow-sm' : 'border-border hover:border-primary/40'}`}
+                  >
+                    {img ? (
+                      <img src={img} alt="" className="w-full h-full object-cover" onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+                    ) : (
+                      <span className="text-2xl">{PLANT_EMOJIS[product.category] || '🌿'}</span>
+                    )}
+                  </button>
+                ))}
+              </div>
+            )}
+            {/* Emoji thumbnails if no images */}
+            {allImages.filter(Boolean).length === 0 && (
+              <div className="flex gap-3 mt-4">
+                {[0, 1, 2].map(i => (
+                  <div key={i} className={`w-16 h-16 rounded-xl border-2 ${i === 0 ? 'border-primary' : 'border-border'} ${PLANT_COLORS[product.id] || 'bg-green-50'} flex items-center justify-center text-2xl`}>
+                    {PLANT_EMOJIS[product.category] || '🌿'}
+                  </div>
+                ))}
+              </div>
+            )}
           </motion.div>
 
           {/* Info */}
@@ -269,23 +326,27 @@ export default function ProductDetail() {
         </div>
 
         {/* Reviews */}
-        <div className="mb-16">
-          <h2 className="font-serif text-2xl font-bold text-foreground mb-6">Customer Reviews</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {reviews.map(r => (
-              <div key={r.name} className="bg-card border border-card-border rounded-2xl p-5">
-                <div className="flex items-center gap-1 mb-3">
-                  {Array.from({ length: r.rating }).map((_, i) => <Star key={i} className="h-4 w-4 text-amber-400 fill-amber-400" />)}
+        {reviews.length > 0 && (
+          <div className="mb-16">
+            <h2 className="font-serif text-2xl font-bold text-foreground mb-6">Customer Reviews</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {reviews.slice(0, 3).map(r => (
+                <div key={r.id} className="bg-card border border-card-border rounded-2xl p-5">
+                  <div className="flex items-center gap-1 mb-3">
+                    {Array.from({ length: 5 }).map((_, i) => (
+                      <Star key={i} className={`h-4 w-4 ${i < r.rating ? 'text-amber-400 fill-amber-400' : 'text-muted'}`} />
+                    ))}
+                  </div>
+                  <p className="text-sm text-foreground mb-3">"{r.text}"</p>
+                  <div className="flex items-center justify-between text-xs text-muted-foreground">
+                    <span className="font-medium">{r.name}</span>
+                    <span>{r.location} · {r.date}</span>
+                  </div>
                 </div>
-                <p className="text-sm text-foreground mb-3">"{r.text}"</p>
-                <div className="flex items-center justify-between text-xs text-muted-foreground">
-                  <span className="font-medium">{r.name}</span>
-                  <span>{r.date}</span>
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Related */}
         {related.length > 0 && (

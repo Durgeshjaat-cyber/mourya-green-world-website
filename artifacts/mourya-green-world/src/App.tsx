@@ -31,6 +31,7 @@ import AdminProducts from "@/pages/admin/Products";
 import ProductForm from "@/pages/admin/ProductForm";
 import AdminCategories from "@/pages/admin/Categories";
 import AdminSettings from "@/pages/admin/Settings";
+import AdminReviews from "@/pages/admin/Reviews";
 
 const queryClient = new QueryClient();
 
@@ -73,6 +74,9 @@ function Router() {
         </Route>
         <Route path="/admin/categories">
           <ProtectedAdminRoute><AdminCategories /></ProtectedAdminRoute>
+        </Route>
+        <Route path="/admin/reviews">
+          <ProtectedAdminRoute><AdminReviews /></ProtectedAdminRoute>
         </Route>
         <Route path="/admin/settings">
           <ProtectedAdminRoute><AdminSettings /></ProtectedAdminRoute>

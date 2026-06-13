@@ -19,6 +19,7 @@ export interface Product {
   isNew: boolean;
   isBestseller: boolean;
   image: string;
+  images?: string[]; // additional product photos
 }
 
 export const categories = [

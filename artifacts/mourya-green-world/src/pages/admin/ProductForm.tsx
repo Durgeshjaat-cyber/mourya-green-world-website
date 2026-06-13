@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { ArrowLeft, Upload, Link as LinkIcon, ImageOff, CheckCircle } from 'lucide-react';
+import { ArrowLeft, Upload, Link as LinkIcon, CheckCircle, Plus, X, Images } from 'lucide-react';
 import { useAdmin } from '@/contexts/AdminContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -52,6 +52,7 @@ export default function ProductForm() {
 
   const isEdit = !!params.id;
   const existing = isEdit ? products.find(p => p.id === params.id) : undefined;
+  const [extraImages, setExtraImages] = useState<string[]>(() => existing?.images ?? ['']);
 
   useEffect(() => {
     document.title = isEdit ? `Edit ${existing?.name ?? 'Product'} — Admin` : 'Add Product — Admin';
@@ -115,6 +116,7 @@ export default function ProductForm() {
       category: data.category,
       description: data.description,
       image: data.image || '',
+      images: extraImages.filter(u => u.trim()),
       rating: data.rating,
       reviews: data.reviews,
       inStock: data.inStock,
@@ -237,6 +239,58 @@ export default function ProductForm() {
                   </div>
                 )}
               </div>
+            </div>
+          </div>
+
+          {/* Additional Images */}
+          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="font-semibold text-gray-900 text-sm uppercase tracking-wide flex items-center gap-2">
+                  <Images className="h-4 w-4" /> Additional Photos
+                </h3>
+                <p className="text-xs text-gray-400 mt-0.5">Add more image URLs for the product gallery (customers can browse all photos)</p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setExtraImages(p => [...p, ''])}
+                className="flex items-center gap-1.5 text-xs font-medium text-primary border border-primary/30 px-3 py-1.5 rounded-lg hover:bg-primary/5 transition-colors"
+              >
+                <Plus className="h-3.5 w-3.5" /> Add Photo
+              </button>
+            </div>
+            {extraImages.length === 0 && (
+              <p className="text-sm text-gray-400 text-center py-4 border-2 border-dashed border-gray-100 rounded-xl">
+                No additional photos. Click "Add Photo" to add more images.
+              </p>
+            )}
+            <div className="space-y-2">
+              {extraImages.map((url, idx) => (
+                <div key={idx} className="flex gap-2 items-center">
+                  <span className="text-xs text-gray-400 w-5 shrink-0 text-center">{idx + 1}</span>
+                  <Input
+                    placeholder={`https://example.com/photo-${idx + 1}.jpg`}
+                    value={url}
+                    onChange={e => setExtraImages(p => p.map((u, i) => i === idx ? e.target.value : u))}
+                    className="flex-1 text-sm"
+                  />
+                  {url && (
+                    <img
+                      src={url}
+                      alt="thumb"
+                      className="w-9 h-9 rounded-lg object-cover border border-gray-100 shrink-0"
+                      onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                    />
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => setExtraImages(p => p.filter((_, i) => i !== idx))}
+                    className="p-1.5 rounded-lg hover:bg-red-50 text-gray-400 hover:text-red-500 transition-colors shrink-0"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                </div>
+              ))}
             </div>
           </div>
 

@@ -3,15 +3,15 @@ import { Link, useLocation } from 'wouter';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   LayoutDashboard, Package, Tag, Settings, LogOut,
-  Menu, X, ChevronRight, Store
+  Menu, ChevronRight, Store, Star
 } from 'lucide-react';
 import { useAdmin } from '@/contexts/AdminContext';
-import { Button } from '@/components/ui/button';
 
 const navItems = [
   { path: '/admin', label: 'Dashboard', icon: LayoutDashboard, exact: true },
   { path: '/admin/products', label: 'Products', icon: Package },
   { path: '/admin/categories', label: 'Categories', icon: Tag },
+  { path: '/admin/reviews', label: 'Reviews', icon: Star },
   { path: '/admin/settings', label: 'Settings', icon: Settings },
 ];
 
@@ -22,6 +22,8 @@ export function AdminLayout({ children }: { children: ReactNode }) {
 
   const isActive = (path: string, exact?: boolean) =>
     exact ? location === path : location.startsWith(path);
+
+  const currentLabel = navItems.find(n => isActive(n.path, n.exact))?.label ?? 'Admin';
 
   return (
     <div className="min-h-screen bg-gray-50 flex">
@@ -52,13 +54,13 @@ export function AdminLayout({ children }: { children: ReactNode }) {
             </div>
             <div>
               <p className="font-bold text-sm text-foreground">Admin Panel</p>
-              <p className="text-xs text-muted-foreground">{settings.storeName}</p>
+              <p className="text-xs text-muted-foreground truncate max-w-[140px]">{settings.storeName}</p>
             </div>
           </div>
         </div>
 
         {/* Nav */}
-        <nav className="flex-1 p-4 space-y-1">
+        <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
           {navItems.map(item => (
             <Link key={item.path} href={item.path}>
               <a
@@ -79,10 +81,13 @@ export function AdminLayout({ children }: { children: ReactNode }) {
           ))}
         </nav>
 
-        {/* Bottom actions */}
+        {/* Bottom */}
         <div className="p-4 border-t border-gray-100 space-y-2">
           <Link href="/">
-            <a className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-900 transition-all">
+            <a
+              target="_blank"
+              className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-900 transition-all"
+            >
               <Store className="h-4 w-4" />
               View Website
             </a>
@@ -108,17 +113,15 @@ export function AdminLayout({ children }: { children: ReactNode }) {
             <Menu className="h-5 w-5 text-gray-600" />
           </button>
           <div className="flex-1">
-            <h1 className="text-sm font-semibold text-gray-900 hidden sm:block">
-              {navItems.find(n => isActive(n.path, n.exact))?.label ?? 'Admin'}
-            </h1>
+            <h1 className="text-sm font-semibold text-gray-900 hidden sm:block">{currentLabel}</h1>
           </div>
-          <span className="text-xs text-muted-foreground bg-green-50 text-green-700 font-medium px-3 py-1 rounded-full">
+          <span className="text-xs bg-green-50 text-green-700 font-medium px-3 py-1 rounded-full">
             🟢 Admin
           </span>
         </header>
 
         {/* Page content */}
-        <main className="flex-1 p-4 lg:p-6">
+        <main className="flex-1 p-4 lg:p-6 overflow-x-hidden">
           {children}
         </main>
       </div>

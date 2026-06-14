@@ -62,7 +62,9 @@ export default function Wishlist() {
 
         {items.length === 0 ? (
           <div className="text-center py-24">
-            <div className="text-8xl mb-6">💚</div>
+            <div className="w-20 h-20 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-6">
+              <Heart className="h-10 w-10 text-primary/60" />
+            </div>
             <h2 className="font-serif text-2xl font-bold text-foreground mb-3">Your wishlist is empty</h2>
             <p className="text-muted-foreground mb-8">Save your favourite plants here and order them anytime!</p>
             <Button onClick={() => setLocation('/shop')} className="bg-primary hover:bg-primary/90 text-white rounded-full px-8">

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link, useLocation } from 'wouter';
 import { motion } from 'framer-motion';
-import { Star, ShoppingBag, MessageCircle, Heart, Truck, RotateCcw, Sun, Droplets, TrendingUp, CheckCircle, ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Star, ShoppingBag, MessageCircle, Heart, Truck, RotateCcw, Sun, Droplets, TrendingUp, CheckCircle, ArrowLeft, ChevronLeft, ChevronRight, Leaf } from 'lucide-react';
 import { usePublicData } from '@/contexts/AdminContext';
 import { useSEO } from '@/lib/useSEO';
 import { useCart } from '@/contexts/CartContext';
@@ -20,11 +20,6 @@ const PLANT_COLORS: Record<string, string> = {
   'p17': 'bg-pink-50', 'p18': 'bg-rose-50', 'p19': 'bg-emerald-200', 'p20': 'bg-slate-100',
 };
 
-const PLANT_EMOJIS: Record<string, string> = {
-  'Indoor Plants': '🌿', 'Outdoor Plants': '🌱', 'Air Purifying Plants': '💨',
-  'Lucky Plants': '🍀', 'Flowering Plants': '🌸', 'Succulents': '🌵',
-  'Hanging Plants': '🪴', 'Bonsai Plants': '🌳', 'Pots & Planters': '🏺',
-};
 
 const _staticReviews = [
   { name: 'Priya S.', rating: 5, text: 'Plant arrived in perfect condition! Beautifully packaged and healthy.', date: 'Dec 2024' },
@@ -60,10 +55,12 @@ export default function ProductDetail() {
 
   if (!product) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center gap-4">
-        <p className="text-6xl">🌿</p>
+      <div className="min-h-screen flex flex-col items-center justify-center gap-4 px-4">
+        <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center">
+          <Leaf className="h-8 w-8 text-primary/60" />
+        </div>
         <h2 className="font-serif text-2xl font-bold">Plant not found</h2>
-        <Link href="/shop"><Button className="bg-primary text-white">Back to Shop</Button></Link>
+        <Link href="/shop"><Button className="bg-primary text-white rounded-full px-8">Back to Shop</Button></Link>
       </div>
     );
   }
@@ -101,7 +98,9 @@ export default function ProductDetail() {
                   onError={() => setImgError(true)}
                 />
               ) : (
-                <span className="text-[160px]">{PLANT_EMOJIS[product.category] || '🌿'}</span>
+                <div className={`w-full h-full flex items-center justify-center ${PLANT_COLORS[product.id] || 'bg-green-50'}`}>
+                  <Leaf className="h-24 w-24 text-primary/30" />
+                </div>
               )}
               {/* Prev/Next arrows when multiple images */}
               {allImages.length > 1 && (
@@ -143,18 +142,18 @@ export default function ProductDetail() {
                     {img ? (
                       <img src={img} alt="" className="w-full h-full object-cover" onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }} />
                     ) : (
-                      <span className="text-2xl">{PLANT_EMOJIS[product.category] || '🌿'}</span>
+                      <Leaf className="h-5 w-5 text-primary/40" />
                     )}
                   </button>
                 ))}
               </div>
             )}
-            {/* Emoji thumbnails if no images */}
+            {/* Placeholder thumbnails if no images */}
             {allImages.filter(Boolean).length === 0 && (
               <div className="flex gap-3 mt-4">
                 {[0, 1, 2].map(i => (
-                  <div key={i} className={`w-16 h-16 rounded-xl border-2 ${i === 0 ? 'border-primary' : 'border-border'} ${PLANT_COLORS[product.id] || 'bg-green-50'} flex items-center justify-center text-2xl`}>
-                    {PLANT_EMOJIS[product.category] || '🌿'}
+                  <div key={i} className={`w-16 h-16 rounded-xl border-2 ${i === 0 ? 'border-primary' : 'border-border'} ${PLANT_COLORS[product.id] || 'bg-green-50'} flex items-center justify-center`}>
+                    <Leaf className="h-5 w-5 text-primary/40" />
                   </div>
                 ))}
               </div>

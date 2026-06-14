@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Link } from 'wouter';
-import { Heart, ShoppingBag, MessageCircle, Star } from 'lucide-react';
+import { Link, useLocation } from 'wouter';
+import { Heart, ShoppingBag, MessageCircle, Star, Leaf } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Product } from '@/data/products';
 import { useCart } from '@/contexts/CartContext';
@@ -8,45 +8,17 @@ import { useWishlist } from '@/contexts/WishlistContext';
 import { useToast } from '@/hooks/use-toast';
 import { usePublicData } from '@/contexts/AdminContext';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 
 interface ProductCardProps {
   product: Product;
 }
 
 const PLANT_COLORS: Record<string, string> = {
-  'p1': 'bg-emerald-100',
-  'p2': 'bg-teal-100',
-  'p3': 'bg-green-100',
-  'p4': 'bg-lime-100',
-  'p5': 'bg-emerald-200',
-  'p6': 'bg-teal-200',
-  'p7': 'bg-green-200',
-  'p8': 'bg-lime-200',
-  'p9': 'bg-emerald-50',
-  'p10': 'bg-teal-50',
-  'p11': 'bg-green-50',
-  'p12': 'bg-lime-50',
-  'p13': 'bg-emerald-100',
-  'p14': 'bg-teal-100',
-  'p15': 'bg-green-100',
-  'p16': 'bg-lime-100',
-  'p17': 'bg-pink-50',
-  'p18': 'bg-rose-50',
-  'p19': 'bg-emerald-200',
-  'p20': 'bg-slate-100',
-};
-
-const PLANT_EMOJIS: Record<string, string> = {
-  'Indoor Plants': '🌿',
-  'Outdoor Plants': '🌱',
-  'Air Purifying Plants': '💨',
-  'Lucky Plants': '🍀',
-  'Flowering Plants': '🌸',
-  'Succulents': '🌵',
-  'Hanging Plants': '🪴',
-  'Bonsai Plants': '🌳',
-  'Pots & Planters': '🏺',
+  'p1': 'bg-emerald-50', 'p2': 'bg-teal-50', 'p3': 'bg-green-50', 'p4': 'bg-lime-50',
+  'p5': 'bg-emerald-100', 'p6': 'bg-teal-100', 'p7': 'bg-green-100', 'p8': 'bg-lime-100',
+  'p9': 'bg-emerald-50', 'p10': 'bg-teal-50', 'p11': 'bg-green-50', 'p12': 'bg-lime-50',
+  'p13': 'bg-emerald-100', 'p14': 'bg-teal-100', 'p15': 'bg-green-100', 'p16': 'bg-lime-100',
+  'p17': 'bg-pink-50', 'p18': 'bg-rose-50', 'p19': 'bg-emerald-100', 'p20': 'bg-slate-50',
 };
 
 export function ProductCard({ product }: ProductCardProps) {
@@ -55,17 +27,21 @@ export function ProductCard({ product }: ProductCardProps) {
   const { toast } = useToast();
   const { settings } = usePublicData();
   const [imgError, setImgError] = useState(false);
+  const [hovered, setHovered] = useState(false);
+  const [, navigate] = useLocation();
 
   const discount = Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100);
   const wishlisted = isInWishlist(product.id);
   const waMsg = encodeURIComponent(`Hi! I'm interested in ${product.name} (₹${product.price}). Is it available?`);
 
-  const handleAddToCart = () => {
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.stopPropagation();
     addToCart(product);
     toast({ title: 'Added to cart!', description: `${product.name} has been added to your cart.` });
   };
 
-  const handleWishlist = () => {
+  const handleWishlist = (e: React.MouseEvent) => {
+    e.stopPropagation();
     toggleWishlist(product);
     toast({
       title: wishlisted ? 'Removed from wishlist' : 'Added to wishlist!',
@@ -73,40 +49,60 @@ export function ProductCard({ product }: ProductCardProps) {
     });
   };
 
+  const handleWhatsApp = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    window.open(`https://wa.me/${settings.whatsappPrimary}?text=${waMsg}`, '_blank', 'noopener,noreferrer');
+  };
+
   return (
     <motion.div
       data-testid={`card-product-${product.id}`}
-      className="group bg-card border border-card-border rounded-2xl overflow-hidden hover:shadow-lg transition-shadow duration-300 flex flex-col"
-      whileHover={{ y: -4 }}
-      transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+      className="group bg-card border border-card-border rounded-2xl overflow-hidden flex flex-col cursor-pointer"
+      style={{ boxShadow: '0 2px 8px -2px hsl(123 55% 24% / 0.08)' }}
+      whileHover={{
+        y: -6,
+        boxShadow: '0 16px 32px -8px hsl(123 55% 24% / 0.18)',
+      }}
+      transition={{ type: 'spring', stiffness: 320, damping: 28 }}
+      onHoverStart={() => setHovered(true)}
+      onHoverEnd={() => setHovered(false)}
+      onClick={() => navigate(`/product/${product.id}`)}
     >
       {/* Image area */}
-      <div className="relative overflow-hidden aspect-square">
-        <Link href={`/product/${product.id}`}>
-          {!imgError ? (
-            <img
-              src={product.image}
-              alt={product.name}
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-              onError={() => setImgError(true)}
-            />
-          ) : (
-            <div className={`w-full h-full flex items-center justify-center text-6xl ${PLANT_COLORS[product.id] || 'bg-green-50'}`}>
-              {PLANT_EMOJIS[product.category] || '🌿'}
-            </div>
-          )}
-        </Link>
+      <div className="relative overflow-hidden aspect-[4/3]">
+        {!imgError ? (
+          <img
+            src={product.image}
+            alt={product.name}
+            className="w-full h-full object-cover"
+            style={{
+              transform: hovered ? 'scale(1.08)' : 'scale(1)',
+              transition: 'transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94)',
+            }}
+            onError={() => setImgError(true)}
+          />
+        ) : (
+          <div className={`w-full h-full flex items-center justify-center ${PLANT_COLORS[product.id] || 'bg-green-50'}`}>
+            <Leaf className="h-12 w-12 text-primary/30" />
+          </div>
+        )}
+
+        {/* Subtle gradient overlay */}
+        <div
+          className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent"
+          style={{ opacity: hovered ? 1 : 0, transition: 'opacity 0.3s ease' }}
+        />
 
         {/* Badges */}
-        <div className="absolute top-3 left-3 flex flex-col gap-1">
+        <div className="absolute top-2.5 left-2.5 flex flex-col gap-1">
           {product.isBestseller && (
-            <Badge className="bg-primary text-white text-[10px] px-2 py-0.5">Bestseller</Badge>
+            <Badge className="bg-primary text-white text-[10px] px-2 py-0.5 shadow-sm">Bestseller</Badge>
           )}
           {product.isNew && (
-            <Badge className="bg-secondary text-white text-[10px] px-2 py-0.5">New</Badge>
+            <Badge className="bg-secondary text-white text-[10px] px-2 py-0.5 shadow-sm">New</Badge>
           )}
           {discount > 0 && (
-            <Badge className="bg-destructive text-white text-[10px] px-2 py-0.5">{discount}% off</Badge>
+            <Badge className="bg-destructive text-white text-[10px] px-2 py-0.5 shadow-sm">{discount}% off</Badge>
           )}
         </div>
 
@@ -114,67 +110,77 @@ export function ProductCard({ product }: ProductCardProps) {
         <button
           data-testid={`button-wishlist-${product.id}`}
           onClick={handleWishlist}
-          className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-sm hover:scale-110 transition-transform"
+          className="absolute top-2.5 right-2.5 w-8 h-8 rounded-full bg-white/92 backdrop-blur-sm flex items-center justify-center shadow-md hover:scale-110 transition-all duration-200 z-10"
         >
           <Heart
-            className={`h-4 w-4 transition-colors ${wishlisted ? 'text-red-500 fill-red-500' : 'text-muted-foreground'}`}
+            className={`h-3.5 w-3.5 transition-colors ${wishlisted ? 'text-red-500 fill-red-500' : 'text-foreground/55'}`}
           />
         </button>
+
+        {/* Hover action bar — positioned at bottom, above image */}
+        <div
+          className="absolute bottom-0 left-0 right-0 flex gap-1.5 p-2.5 z-10"
+          style={{
+            transform: hovered ? 'translateY(0)' : 'translateY(110%)',
+            opacity: hovered ? 1 : 0,
+            transition: 'transform 0.22s cubic-bezier(0.25,0.46,0.45,0.94), opacity 0.22s ease',
+          }}
+        >
+          <button
+            data-testid={`button-add-cart-${product.id}`}
+            onClick={handleAddToCart}
+            className="flex-1 flex items-center justify-center gap-1.5 h-9 rounded-xl bg-primary text-white text-xs font-semibold shadow-lg hover:bg-primary/90 active:scale-95 transition-colors"
+          >
+            <ShoppingBag className="h-3.5 w-3.5" />
+            Add to Cart
+          </button>
+          <button
+            data-testid={`button-whatsapp-${product.id}`}
+            onClick={handleWhatsApp}
+            className="w-9 h-9 rounded-xl bg-[#25D366] flex items-center justify-center shadow-lg hover:bg-[#22c35e] active:scale-95 transition-colors"
+          >
+            <MessageCircle className="h-4 w-4 text-white" />
+          </button>
+        </div>
       </div>
 
       {/* Info */}
-      <div className="p-4 flex flex-col gap-3 flex-1">
+      <div className="p-3.5 flex flex-col gap-2 flex-1">
         <div>
-          <p className="text-xs text-muted-foreground mb-1">{product.category}</p>
-          <Link href={`/product/${product.id}`}>
-            <h3 className="font-semibold text-foreground hover:text-primary transition-colors leading-tight line-clamp-1">
-              {product.name}
-            </h3>
-          </Link>
-          <p className="text-xs text-muted-foreground mt-1 line-clamp-2">{product.description}</p>
+          <p className="text-[11px] text-muted-foreground font-medium uppercase tracking-wide mb-0.5">{product.category}</p>
+          <h3 className="font-semibold text-sm text-foreground group-hover:text-primary transition-colors leading-snug line-clamp-1">
+            {product.name}
+          </h3>
         </div>
 
         {/* Rating */}
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-0.5">
           {Array.from({ length: 5 }).map((_, i) => (
             <Star
               key={i}
-              className={`h-3 w-3 ${i < Math.floor(product.rating) ? 'text-amber-400 fill-amber-400' : 'text-muted-foreground'}`}
+              className={`h-2.5 w-2.5 ${i < Math.floor(product.rating) ? 'text-amber-400 fill-amber-400' : 'text-muted-foreground/25'}`}
             />
           ))}
-          <span className="text-xs text-muted-foreground ml-1">({product.reviews})</span>
+          <span className="text-[10px] text-muted-foreground ml-1">({product.reviews})</span>
         </div>
 
         {/* Price */}
-        <div className="flex items-center gap-2">
-          <span className="font-bold text-primary text-lg">₹{product.price}</span>
+        <div className="flex items-center gap-1.5 mt-auto pt-1">
+          <span className="font-bold text-primary text-base">₹{product.price}</span>
           {product.originalPrice > product.price && (
-            <span className="text-sm text-muted-foreground line-through">₹{product.originalPrice}</span>
+            <span className="text-xs text-muted-foreground line-through">₹{product.originalPrice}</span>
           )}
         </div>
 
-        {/* Actions */}
-        <div className="flex flex-col gap-2 mt-auto">
-          <Button
-            data-testid={`button-add-cart-${product.id}`}
-            onClick={handleAddToCart}
-            size="sm"
-            className="w-full bg-primary hover:bg-primary/90 text-white"
-          >
-            <ShoppingBag className="h-3.5 w-3.5 mr-1.5" />
-            Add to Cart
-          </Button>
-          <a
-            href={`https://wa.me/${settings.whatsappPrimary}?text=${waMsg}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            data-testid={`button-whatsapp-${product.id}`}
-            className="flex items-center justify-center gap-1.5 text-xs text-[#25D366] font-medium py-1.5 border border-[#25D366]/30 rounded-lg hover:bg-[#25D366]/5 transition-colors"
-          >
-            <MessageCircle className="h-3.5 w-3.5" />
-            WhatsApp Inquiry
-          </a>
-        </div>
+        {/* Mobile-only add to cart */}
+        <button
+          data-testid={`button-add-cart-mobile-${product.id}`}
+          onClick={handleAddToCart}
+          className="md:hidden w-full flex items-center justify-center gap-1.5 h-8 rounded-xl bg-primary/10 text-primary text-xs font-semibold active:scale-95 transition-all"
+        >
+          <ShoppingBag className="h-3 w-3" />
+          Add to Cart
+        </button>
       </div>
     </motion.div>
   );

@@ -32,7 +32,9 @@ export default function About() {
       <section className="bg-gradient-to-b from-primary/10 to-background pt-16 pb-12">
         <div className="container mx-auto px-4 max-w-3xl text-center">
           <motion.div initial="hidden" animate="visible" variants={fadeUp}>
-            <span className="text-6xl mb-6 block">🌿</span>
+            <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-6">
+              <Leaf className="h-8 w-8 text-primary" />
+            </div>
             <h1 className="font-serif text-4xl md:text-5xl font-bold text-foreground mb-6">
               About Mourya Green World
             </h1>
@@ -94,9 +96,19 @@ export default function About() {
               transition={{ duration: 0.5 }}
               className="grid grid-cols-2 gap-4"
             >
-              {['🌿', '🌱', '🪴', '🌸'].map((em, i) => (
-                <div key={i} className={`aspect-square rounded-2xl flex items-center justify-center text-7xl ${['bg-emerald-50', 'bg-teal-50', 'bg-green-50', 'bg-lime-50'][i]}`}>
-                  {em}
+              {[
+                '/images/products/plant-1.png',
+                '/images/products/plant-2.png',
+                '/images/products/plant-3.png',
+                '/images/products/plant-4.png',
+              ].map((src, i) => (
+                <div key={i} className={`aspect-square rounded-2xl overflow-hidden ${['bg-emerald-50', 'bg-teal-50', 'bg-green-50', 'bg-lime-50'][i]}`}>
+                  <img
+                    src={src}
+                    alt={`Our nursery plant ${i + 1}`}
+                    className="w-full h-full object-cover"
+                    onError={(e) => { (e.target as HTMLImageElement).style.opacity = '0.3'; }}
+                  />
                 </div>
               ))}
             </motion.div>

@@ -84,3 +84,63 @@ id = "nA-QHQkReADedM2yOcCO-"
 uri = "file://artifacts/mourya-green-world/src/assets/plant-3.png"
 type = "image"
 title = "Fiddle leaf fig"
+
+[[generated]]
+id = "kdc9liiAoZX6kOxnqjFA7"
+uri = "file://artifacts/mourya-green-world/public/images/hero-bg.png"
+type = "image"
+title = "Hero lush tropical plant"
+
+[[generated]]
+id = "_fJHZkqPflDEGWySlH_7l"
+uri = "file://artifacts/mourya-green-world/public/images/gallery-indoor.png"
+type = "image"
+title = "Indoor plant gallery"
+
+[[generated]]
+id = "FlkqeOKTIDXsjkM0dikg9"
+uri = "file://artifacts/mourya-green-world/public/images/gallery-flowering.png"
+type = "image"
+title = "Flowering plant gallery"
+
+[[generated]]
+id = "l-KuNi2K52wMWgzQ8JODY"
+uri = "file://artifacts/mourya-green-world/public/images/gallery-succulent.png"
+type = "image"
+title = "Succulent gallery"
+
+[[generated]]
+id = "i16O8sEG0EmFv-MOmGaxx"
+uri = "file://artifacts/mourya-green-world/public/images/gallery-bonsai.png"
+type = "image"
+title = "Bonsai gallery"
+
+[[generated]]
+id = "vpXbYUoMwmFzcNM_GTOuw"
+uri = "file://artifacts/mourya-green-world/public/images/gallery-hanging.png"
+type = "image"
+title = "Hanging plant gallery"
+
+[[generated]]
+id = "54irmNdwIGlJ_BNP6OwPw"
+uri = "file://artifacts/mourya-green-world/public/images/gallery-lucky.png"
+type = "image"
+title = "Lucky plant gallery"
+
+[[generated]]
+id = "bOzO9_9XPF1rP8H9oO1IU"
+uri = "file://artifacts/mourya-green-world/public/images/blog-watering.png"
+type = "image"
+title = "Blog watering plants"
+
+[[generated]]
+id = "_BZ6wu8iRSJ6hwCS381EB"
+uri = "file://artifacts/mourya-green-world/public/images/blog-repotting.png"
+type = "image"
+title = "Blog repotting plants"
+
+[[generated]]
+id = "MfHEOeR68ILspnW9Jrh7a"
+uri = "file://artifacts/mourya-green-world/public/images/blog-lighting.png"
+type = "image"
+title = "Blog plant lighting"

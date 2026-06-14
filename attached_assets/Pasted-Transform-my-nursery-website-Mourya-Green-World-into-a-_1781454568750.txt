@@ -1,0 +1,108 @@
+Transform my nursery website "Mourya Green World" into a premium modern e-commerce plant store inspired by Ugaoo, Urvann and other high-end plant brands.
+
+⚠️ IMPORTANT:
+Keep all existing functionality, admin panel, products, categories, WhatsApp integration, database, authentication system, routes, API connections and backend logic completely unchanged.
+
+DO NOT remove or modify any existing features.
+
+Only improve:
+
+- UI/UX
+- Styling
+- Layout
+- Design
+- Typography
+- Visual hierarchy
+- Responsiveness
+- Animations
+
+🎨 Design Requirements
+
+- Premium luxury nursery brand feel
+- Modern and elegant design
+- Nature-inspired aesthetics
+- Soft green, white, beige and earthy color palette
+- Beautiful gradients
+- Modern shadows
+- Glassmorphism effects where appropriate
+- Smooth transitions and animations
+- Premium hover effects
+- Better spacing and alignment
+- Consistent visual design system
+
+🌿 Brand Colors
+Primary: #1B5E20
+Secondary: #4CAF50
+Accent: #81C784
+Background: #F8F5F0
+White: #FFFFFF
+
+🔤 Typography
+
+- Playfair Display for headings
+- Poppins for body text
+- Premium luxury feel
+- Better font hierarchy
+
+🏠 Homepage Improvements
+
+- Full-width premium hero section
+- Realistic plant imagery
+- Animated CTA buttons
+- Featured categories section redesign
+- Premium best seller cards
+- New arrivals section
+- Trending plants section
+- Customer reviews carousel
+- Why choose us section
+- WhatsApp ordering section
+- Nursery gallery section
+- Instagram showcase section
+- FAQ section
+- Modern footer
+
+🛍️ Product Card Improvements
+
+- Premium product cards
+- Better plant images
+- Wishlist button
+- Quick view button
+- Add to cart button
+- Stock indicators
+- Rating display
+- Plant care badges
+- Hover animations
+- Modern shadows
+
+📱 Mobile Optimization
+
+- Mobile-first design
+- Sticky bottom navigation
+- Floating WhatsApp button
+- Improved touch interactions
+- Faster loading experience
+
+✨ Advanced UI Features
+
+- Skeleton loaders
+- Smooth page transitions
+- Toast notifications
+- Modern search bar
+- Better filtering interface
+- Elegant empty states
+- Professional loading animations
+
+🌱 Conversion Focus
+
+- Make WhatsApp ordering highly visible
+- Improve trust and professionalism
+- Increase customer engagement
+- Improve conversion rate
+- Make the website look like a premium nursery brand
+
+📍 Business Details
+Mourya Green World
+Sector 94, Bandh Road, Near Okhla Bird Sanctuary, Noida
+
+Final Goal:
+Make the website visually stunning, premium, modern, trustworthy and professional while keeping ALL existing functionality exactly the same.

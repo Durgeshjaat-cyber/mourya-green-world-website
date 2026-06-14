@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Link, useLocation } from 'wouter';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ShoppingBag, Trash2, Plus, Minus, ArrowLeft, ArrowRight } from 'lucide-react';
+import { ShoppingBag, Trash2, Plus, Minus, ArrowLeft, ArrowRight, Leaf } from 'lucide-react';
 import { FaWhatsapp } from 'react-icons/fa';
 import { useCart } from '@/contexts/CartContext';
 import { usePublicData } from '@/contexts/AdminContext';
@@ -35,7 +35,9 @@ export default function Cart() {
 
         {items.length === 0 ? (
           <div className="text-center py-24">
-            <div className="text-8xl mb-6">🛒</div>
+            <div className="w-20 h-20 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-6">
+              <ShoppingBag className="h-10 w-10 text-primary/60" />
+            </div>
             <h2 className="font-serif text-2xl font-bold text-foreground mb-3">Your cart is empty</h2>
             <p className="text-muted-foreground mb-8">Add some beautiful plants to get started!</p>
             <Button onClick={() => setLocation('/shop')} className="bg-primary hover:bg-primary/90 text-white rounded-full px-8">
@@ -57,8 +59,8 @@ export default function Cart() {
                     className="bg-card border border-card-border rounded-2xl p-4 flex gap-4 items-center"
                     data-testid={`row-cart-${item.id}`}
                   >
-                    <div className="w-20 h-20 rounded-xl bg-emerald-50 flex items-center justify-center text-4xl shrink-0">
-                      🌿
+                    <div className="w-20 h-20 rounded-xl bg-emerald-50 flex items-center justify-center shrink-0">
+                      <Leaf className="h-8 w-8 text-primary/40" />
                     </div>
                     <div className="flex-1 min-w-0">
                       <Link href={`/product/${item.id}`}>

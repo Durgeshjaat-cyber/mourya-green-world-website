@@ -441,12 +441,14 @@ export default function Inquiry() {
         {/* Trust Badges */}
         <div className="grid grid-cols-3 gap-4 mt-8">
           {[
-            { icon: '⚡', title: '2-Hour Response', desc: 'Fast replies on WhatsApp' },
-            { icon: '💰', title: 'Best Prices', desc: 'Competitive bulk pricing' },
-            { icon: '🚚', title: 'Free Delivery', desc: 'Within Noida' },
+            { icon: CheckCircle, title: '2-Hour Response', desc: 'Fast replies on WhatsApp' },
+            { icon: Leaf, title: 'Best Prices', desc: 'Competitive bulk pricing' },
+            { icon: Truck, title: 'Free Delivery', desc: 'Within Noida' },
           ].map(badge => (
             <div key={badge.title} className="text-center p-4 bg-muted/30 rounded-2xl">
-              <span className="text-2xl block mb-2">{badge.icon}</span>
+              <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center mx-auto mb-2">
+                <badge.icon className="h-4.5 w-4.5 text-primary" />
+              </div>
               <p className="font-medium text-sm text-foreground">{badge.title}</p>
               <p className="text-xs text-muted-foreground">{badge.desc}</p>
             </div>

@@ -165,7 +165,9 @@ export default function Shop() {
           </motion.div>
         ) : (
           <div className="text-center py-24">
-            <p className="text-6xl mb-4">🔍</p>
+            <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
+              <Search className="h-8 w-8 text-primary/50" />
+            </div>
             <h3 className="font-serif text-2xl font-bold text-foreground mb-2">No plants found</h3>
             <p className="text-muted-foreground mb-6">Try a different search or category</p>
             <Button

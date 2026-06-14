@@ -1,0 +1,8 @@
+{
+  "buildCommand": "pnpm --filter @workspace/mourya-green-world build",
+  "outputDirectory": "artifacts/mourya-green-world/dist/public",
+  "installCommand": "pnpm install",
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}

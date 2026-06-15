@@ -31,7 +31,7 @@ export function Footer() {
               <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
                 <Leaf className="h-4 w-4 text-white" />
               </div>
-              <h3 className="font-serif text-xl font-bold text-white">Mourya Green World</h3>
+              <h3 className="font-serif text-xl font-bold text-white">{settings.storeName}</h3>
             </div>
             <p className="text-sm text-white/65 leading-relaxed mb-6">
               A trusted plant nursery in Noida helping people create greener homes, offices, and gardens through healthy, high-quality plants.
@@ -135,7 +135,7 @@ export function Footer() {
 
         <div className="border-t border-white/10 mt-12 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="text-xs text-white/40">
-            &copy; {new Date().getFullYear()} Mourya Green World. All rights reserved.
+            &copy; {new Date().getFullYear()} {settings.storeName}. All rights reserved.
           </p>
           <p className="text-xs text-white/40">
             Noida, Uttar Pradesh, India

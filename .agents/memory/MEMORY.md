@@ -1,0 +1,1 @@
+- [Mourya Green World routing](mourya-routing.md) — wouter Switch needs specific admin routes before the general /admin route; brand name must be read from AdminContext settings not hardcoded.

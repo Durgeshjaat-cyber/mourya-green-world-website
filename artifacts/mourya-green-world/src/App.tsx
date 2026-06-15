@@ -60,9 +60,6 @@ function Router() {
     return (
       <Switch>
         <Route path="/admin/login" component={AdminLogin} />
-        <Route path="/admin">
-          <ProtectedAdminRoute><AdminDashboard /></ProtectedAdminRoute>
-        </Route>
         <Route path="/admin/products/new">
           <ProtectedAdminRoute><ProductForm /></ProtectedAdminRoute>
         </Route>
@@ -80,6 +77,9 @@ function Router() {
         </Route>
         <Route path="/admin/settings">
           <ProtectedAdminRoute><AdminSettings /></ProtectedAdminRoute>
+        </Route>
+        <Route path="/admin">
+          <ProtectedAdminRoute><AdminDashboard /></ProtectedAdminRoute>
         </Route>
         <Route component={NotFound} />
       </Switch>

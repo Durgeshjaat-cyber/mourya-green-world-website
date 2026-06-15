@@ -3,6 +3,7 @@ import { Link, useLocation } from 'wouter';
 import { Menu, X, Search, Heart, ShoppingBag, Leaf, Home, Store } from 'lucide-react';
 import { useCart } from '@/contexts/CartContext';
 import { useWishlist } from '@/contexts/WishlistContext';
+import { usePublicData } from '@/contexts/AdminContext';
 import { Button } from '@/components/ui/button';
 import { SearchModal } from '@/components/SearchModal';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -14,6 +15,7 @@ export function Navbar() {
   const [location] = useLocation();
   const { cartCount } = useCart();
   const { wishlistCount } = useWishlist();
+  const { settings } = usePublicData();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -55,7 +57,7 @@ export function Navbar() {
               <Leaf className="h-4 w-4 text-white" />
             </div>
             <div className="hidden sm:block">
-              <span className="font-serif text-lg font-bold text-foreground leading-tight tracking-tight">Mourya Green World</span>
+              <span className="font-serif text-lg font-bold text-foreground leading-tight tracking-tight">{settings.storeName}</span>
             </div>
             <span className="font-serif text-base font-bold text-foreground sm:hidden">MGW</span>
           </Link>

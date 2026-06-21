@@ -1,4 +1,10 @@
 {
+  "buildCommand": "cd ../.. && pnpm install && pnpm --filter @workspace/mourya-green-world run build",
+  "outputDirectory": "dist/public",
+  "framework": null,
+  "env": {
+    "BASE_PATH": "/"
+  },
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
   ]

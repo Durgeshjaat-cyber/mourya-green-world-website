@@ -55,6 +55,21 @@ const STORAGE_KEYS = {
   session: 'mourya_admin_session',
 };
 
+// Use localStorage for session so it survives tab switches, background, and
+// direct URL navigation on mobile browsers (sessionStorage is wiped in all
+// those cases on iOS Safari and Android Chrome).
+const sessionStorage_compat = {
+  getItem: (key: string) => {
+    try { return localStorage.getItem(key); } catch { return null; }
+  },
+  setItem: (key: string, value: string) => {
+    try { localStorage.setItem(key, value); } catch { /* ignore */ }
+  },
+  removeItem: (key: string) => {
+    try { localStorage.removeItem(key); } catch { /* ignore */ }
+  },
+};
+
 function simpleHash(str: string): string {
   let hash = 0;
   for (let i = 0; i < str.length; i++) {
@@ -104,7 +119,7 @@ const AdminContext = createContext<AdminContextType | undefined>(undefined);
 
 export function AdminProvider({ children }: { children: ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState(() =>
-    sessionStorage.getItem(STORAGE_KEYS.session) === 'true'
+    sessionStorage_compat.getItem(STORAGE_KEYS.session) === 'true'
   );
 
   const [products, setProducts] = useState<Product[]>(() =>
@@ -156,7 +171,7 @@ export function AdminProvider({ children }: { children: ReactNode }) {
   const login = useCallback((username: string, password: string): boolean => {
     if (username === settings.adminUsername && simpleHash(password) === settings.adminPasswordHash) {
       setIsAuthenticated(true);
-      sessionStorage.setItem(STORAGE_KEYS.session, 'true');
+      sessionStorage_compat.setItem(STORAGE_KEYS.session, 'true');
       return true;
     }
     return false;
@@ -164,7 +179,7 @@ export function AdminProvider({ children }: { children: ReactNode }) {
 
   const logout = useCallback(() => {
     setIsAuthenticated(false);
-    sessionStorage.removeItem(STORAGE_KEYS.session);
+    sessionStorage_compat.removeItem(STORAGE_KEYS.session);
   }, []);
 
   const addProduct = useCallback((data: Omit<Product, 'id'>): Product => {

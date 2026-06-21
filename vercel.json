@@ -1,0 +1,22 @@
+{
+  "buildCommand": "pnpm install && pnpm --filter @workspace/mourya-green-world run build",
+  "outputDirectory": "artifacts/mourya-green-world/dist/public",
+  "framework": null,
+  "env": {
+    "BASE_PATH": "/"
+  },
+  "routes": [
+    {
+      "src": "/assets/(.*)",
+      "dest": "/assets/$1"
+    },
+    {
+      "src": "/(.*\\.(js|css|png|jpg|jpeg|gif|svg|ico|webp|woff|woff2|ttf|eot|map|txt|json))",
+      "dest": "/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ]
+}
